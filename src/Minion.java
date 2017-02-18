@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
+
 public abstract class Minion {
 	protected Image img;
 	int y = 0;
