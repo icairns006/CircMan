@@ -7,7 +7,7 @@ import GameEngine.Game;
 import Ground.Ground;
 
 public class Fireball extends Bullet {
-	float ya = 0;
+	float ya = (float)-.5;
 	float yy = 0;
 	public Fireball(Game game, int xx, int yy, boolean dirr) {
 		super(game, xx, yy, dirr);
