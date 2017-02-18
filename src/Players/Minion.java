@@ -19,6 +19,7 @@ import Objects.Object;
 
 public abstract class Minion {
 	protected Image img;
+	protected Image baseimg;
 	int y = 0;
 	protected int WIDTH = 60;
 	protected int HEIGHT = 60;
@@ -49,6 +50,10 @@ public abstract class Minion {
 	private String PlayerPath= "Resources/Players/";
 	protected String ColorPath= "";
 	private ArrayList<Image> Walking = new ArrayList<Image>();
+	private int numWalkingPhotos = 5;
+	private int walkingPhotoItt	=0;
+	private float  walkingPhotoIttFloat = 0;	
+	private boolean onGround = false;
 	
 	public Minion(Game game, int x,int y,int num) {
 		this.game = game;
@@ -57,19 +62,17 @@ public abstract class Minion {
 		playerNum=num;
 		xx=x;
 		yy=y;
+		createImages();
 		
 	}
 	public void createImages(){
 		ImageIcon ii ;
         Image temp;
-        for(int i = 0; i<5; i++){
-        	ii = new ImageIcon(PlayerPath+ColorPath + (i)+".png");
+        for(int i = 0; i<numWalkingPhotos; i++){
+        	ii = new ImageIcon(PlayerPath+"Blue"+"/Walk/CircManWalk"+(i+1)+".png");
         	temp = ii.getImage();
         	Walking.add(temp);
         }
-		
-		
-		
 		
 	}
 
@@ -92,6 +95,9 @@ public abstract class Minion {
 		else 
 			ya=(float) 0;
 		CheckGround();
+		walkAnimation();
+		//System.out.println(onGround);
+		
 		x=(int)xx;
 		y=(int)yy;
 		if(xa>0)dir=true;
@@ -111,6 +117,17 @@ public abstract class Minion {
 		
 		
 		
+	}
+	public void walkAnimation(){
+		float aniSpeed = (float).1;
+		if(onGround){
+			if(xa!=0){
+				walkingPhotoIttFloat = walkingPhotoIttFloat+aniSpeed;
+				if(walkingPhotoIttFloat> numWalkingPhotos-1)walkingPhotoIttFloat = 0;
+				walkingPhotoItt = (int)walkingPhotoIttFloat;
+				img = Walking.get(walkingPhotoItt);
+			}else img = baseimg;
+		}
 	}
 
 	public void paint(Graphics2D g) {
@@ -231,15 +248,19 @@ public abstract class Minion {
 				if((this.y+HEIGHT)<(bounds.y+5) && ya > 0){
 					ya=0;
 					yy = bounds.y-HEIGHT;
+					onGround= true;
 				}
+				
 			}
 		}
+		
 	}
 	public void Jump(Set<Integer> keys){
 		if(keys.contains(up)){
 			if(upTracker == false){
 				ya = ya-jump;
 				upTracker=true;
+				onGround=false;
 			}
 		}
 		else{

@@ -10,6 +10,7 @@ public class Minion1 extends Minion {
 		super(game,x, y, num);
 		ImageIcon ii = new ImageIcon("Resources/Players/Blue/CircManStand1.png");
         img = ii.getImage();
+        baseimg = img;
     	name = "CircMan1";
     	ColorPath = "Blue/";
     	createImages();
