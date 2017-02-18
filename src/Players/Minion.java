@@ -46,7 +46,7 @@ public abstract class Minion {
 	private int damageLimit = 100;
 	private boolean upTracker = false;
 	private int playerNum=0;
-	private boolean shootRelease = false;
+	private boolean actionRelease = false;
 	private int jump = 2;
 	private String PlayerPath= "Resources/Players/";
 	protected String ColorPath= "";
@@ -130,10 +130,10 @@ public abstract class Minion {
 		if(!punch)gotobj = GetObject(keys);		
 		MoveObject();
 		TossObject(keys);
-		if(gotobj)shootRelease=true;
-		if(shootRelease){
+		if(gotobj)actionRelease=true;
+		if(actionRelease){
 			if(!keys.contains(shootKey)){
-				shootRelease=false;
+				actionRelease=false;
 			}
 		}else Action(keys);
 		
@@ -332,19 +332,39 @@ public abstract class Minion {
 		
 	}
 	public void Punch(){
-		float aniSpeed = (float).1;
+		float aniSpeed = (float).15;
 		if(punchfwd) PunchingPhotoIttFloat = PunchingPhotoIttFloat+aniSpeed;
 		else PunchingPhotoIttFloat = PunchingPhotoIttFloat-aniSpeed;
 		PunchingPhotoItt = (int)PunchingPhotoIttFloat;
 		if(PunchingPhotoItt== numPunchingPhotos-1)punchfwd=false;
 		if(PunchingPhotoItt>4){
 			addedWIDTH = (PunchingPhotoItt-4)*12;
+			
 		}else addedWIDTH = 0;
 		WIDTH = BASEWIDTH+ addedWIDTH;
 		img = Punching.get(PunchingPhotoItt);
+		if(PunchingPhotoItt== numPunchingPhotos-1){
+			for(Minion x: game.minions){
+				if(x!=this){
+					Rectangle bounds = x.getBounds();
+					Rectangle mybox;
+					if(dir) mybox = new Rectangle(this.x+this.BASEWIDTH - 5,y,40,HEIGHT);
+					else mybox = new Rectangle(this.x-35,y,40,HEIGHT);
+				
+					if(bounds.intersects(mybox)){
+						x.giveDamage(10);
+					};
+				}
+			}
+		}
+		
+		
 		if(PunchingPhotoItt==0 && !punchfwd){
 			punchfwd=true;
 			punch = false;
 		}
+	}
+	public void giveDamage(int damage){
+		this.damage =damage+this.damage;
 	}
 }

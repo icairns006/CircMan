@@ -22,6 +22,7 @@ import Objects.FireFlower;
 import Objects.Sword;
 import Players.Minion;
 import Players.Minion1;
+import Players.Minion2;
 import Objects.Object;
 
 @SuppressWarnings("serial")
@@ -55,6 +56,7 @@ public class Game extends JPanel {
 		//minions.add(new Minion1(this,1));
 		//minions.add(new Minion2(this,2));
 		minions.add(new Minion1(this, WIDTH/3, 300,1));
+		minions.add(new Minion2(this, WIDTH/3, 300,2));
 		//minions.add(new Minion2(this,2*WIDTH/3,300, 2));
 		for(int i=0; i< 20;i++){
 			grounds.add(new Grass(this,(i*50),HEIGHT-150));
