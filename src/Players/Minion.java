@@ -49,53 +49,71 @@ public abstract class Minion {
 	private boolean actionRelease = false;
 	private int jump = 2;
 	private String PlayerPath= "Resources/Players/";
-	protected String ColorPath= "";
+	protected String ColorPath= "Blue";
 	private ArrayList<Image> Walking = new ArrayList<Image>();
 	private ArrayList<Image> Jumping = new ArrayList<Image>();
 	private ArrayList<Image> Punching = new ArrayList<Image>();
+	private ArrayList<Image> Kicking = new ArrayList<Image>();
 	private int numWalkingPhotos = 5;
 	private int numJumpingPhotos = 6;
 	private int numPunchingPhotos = 7;
+	private int numKickingPhotos = 7;
 	private int walkingPhotoItt	=0;
 	private float  walkingPhotoIttFloat = 0;
 	private int JumpingPhotoItt	=0;
 	private float  JumpingPhotoIttFloat = 0;
 	private int PunchingPhotoItt	=0;
 	private float  PunchingPhotoIttFloat = 0;
+	private int KickingPhotoItt	=0;
+	private float  KickingPhotoIttFloat = 0;
 	private boolean onGround = false;
 	private boolean jumped = false;
 	private boolean punch = false;
 	private boolean punchfwd = true;
+	private boolean kick = false;
+	private boolean kickfwd = true;
 	private int addedWIDTH=0;
+	private int numJumps = 2;
+	private int numJumpsCount = 0;
 	
-	public Minion(Game game, int x,int y,int num) {
+	public Minion(Game game, int x,int y,int num , String colorPath) {
 		this.game = game;
 		WIDTH =WIDTH*game.scale;
 		HEIGHT =HEIGHT*game.scale;
 		playerNum=num;
 		xx=x;
 		yy=y;
+		this.ColorPath = colorPath;
 		createImages();
 		
 	}
 	public void createImages(){
 		ImageIcon ii ;
         Image temp;
+        
+        ii = new ImageIcon(PlayerPath+ColorPath+"/CircManStand1.png");
+        img = ii.getImage();
+        baseimg = img;
         for(int i = 0; i<numWalkingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+"Blue"+"/Walk/CircManWalk"+(i+1)+".png");
+        	ii = new ImageIcon(PlayerPath+ColorPath+"/Walk/CircManWalk"+(i+1)+".png");
         	temp = ii.getImage();
         	Walking.add(temp);
         }
         
         for(int i = 0; i<numJumpingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+"Blue"+"/Jump/CircManJump"+(i+1)+".png");
+        	ii = new ImageIcon(PlayerPath+ColorPath+"/Jump/CircManJump"+(i+1)+".png");
         	temp = ii.getImage();
         	Jumping.add(temp);
         }
         for(int i = 0; i<numPunchingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+"Blue"+"/Punch/CircManPunch"+(i+1)+".png");
+        	ii = new ImageIcon(PlayerPath+ColorPath+"/Punch/CircManPunch"+(i+1)+".png");
         	temp = ii.getImage();
         	Punching.add(temp);
+        }
+        for(int i = 0; i<numKickingPhotos; i++){
+        	ii = new ImageIcon(PlayerPath+ColorPath+"/Kick/CircManKick"+(i+1)+".png");
+        	temp = ii.getImage();
+        	Kicking.add(temp);
         }
 		
 	}
@@ -114,20 +132,17 @@ public abstract class Minion {
 		
 		if (x + xa > 0 && x + xa < game.getWidth() - WIDTH)
 			xx = xx + xa;
-		if (y + ya > 0 && y + ya < game.getHeight() - HEIGHT)
-			yy = yy + ya;
-		else 
-			ya=(float) 0;
+		yy = yy + ya;
+		
 		CheckGround();
 		walkAnimation();
-		//System.out.println(onGround);
 		
 		x=(int)xx;
 		y=(int)yy;
 		if(xa>0)dir=true;
 		else if(xa<0)dir=false;
 		boolean gotobj =false;
-		if(!punch)gotobj = GetObject(keys);		
+		if(!punch&& !kick)gotobj = GetObject(keys);		
 		MoveObject();
 		TossObject(keys);
 		if(gotobj)actionRelease=true;
@@ -188,7 +203,7 @@ public abstract class Minion {
 	}
 	private Object HitObject(){
 		for(Object x: game.objs){
-			if(x.getBounds().intersects(getBounds()))
+			if(!x.getGot() && x.getBounds().intersects(getBounds()))
 				return x;
 		}
 		return null;
@@ -196,8 +211,8 @@ public abstract class Minion {
 	}
 	private void MoveObject(){
 		if(this.currentObject!= null){
-			if(dir)this.currentObject.setPosition(this.x+WIDTH-(this.currentObject.WIDTH/2), this.y+5+(this.HEIGHT/2), dir);
-			else this.currentObject.setPosition(this.x-(this.currentObject.WIDTH/2), this.y+5+(this.HEIGHT/2), dir);
+			if(dir)this.currentObject.setPosition(this.x+WIDTH-(this.currentObject.WIDTH/2), this.y+(this.HEIGHT/2), dir);
+			else this.currentObject.setPosition(this.x-(this.currentObject.WIDTH/2), this.y+(this.HEIGHT/2), dir);
 			if(objTime<31)
 				this.objTime++;
 		}
@@ -259,6 +274,7 @@ public abstract class Minion {
 	}
 	public boolean GotKilled(){
 		if(damage>damageLimit)return true;
+		if(y + ya > game.getHeight()) return true;
 		return false;
 	}
 	public int getDamage(){
@@ -277,6 +293,7 @@ public abstract class Minion {
 					yy = bounds.y-HEIGHT;
 					onGround= true;
 					jumped = false;
+					numJumpsCount = 0;
 				}
 				
 			}
@@ -285,11 +302,12 @@ public abstract class Minion {
 	}
 	public void Jump(Set<Integer> keys){
 		if(keys.contains(up)){
-			if(upTracker == false){
+			if(upTracker == false && numJumpsCount< numJumps){
 				ya = ya-jump;
 				upTracker=true;
 				onGround=false;
 				jumped = true;
+				numJumpsCount++;
 			}
 		}
 		else{
@@ -321,11 +339,17 @@ public abstract class Minion {
 			else shootcount = 0;
 		}
 		else{
-			if(keys.contains(shootKey)){
-				punch=true;
-			}
+			
 			if(punch){
 				this.Punch();
+			}
+			else if(kick){
+				this.Kick();
+				
+			}
+			else if(keys.contains(shootKey)){
+				if(keys.contains(down))kick = true;
+				else punch=true;
 			}
 		}
 		
@@ -364,7 +388,45 @@ public abstract class Minion {
 			punch = false;
 		}
 	}
+	
+	public void Kick(){
+		float aniSpeed = (float).15;
+		if(kickfwd) KickingPhotoIttFloat = KickingPhotoIttFloat+aniSpeed;
+		else KickingPhotoIttFloat = KickingPhotoIttFloat-aniSpeed;
+		KickingPhotoItt = (int)KickingPhotoIttFloat;
+		if(KickingPhotoItt== numKickingPhotos-1)kickfwd=false;
+		addedWIDTH = 20;
+		WIDTH = BASEWIDTH+ addedWIDTH;
+		img = Kicking.get(KickingPhotoItt);
+		if(KickingPhotoItt== numKickingPhotos-1){
+			for(Minion x: game.minions){
+				if(x!=this){
+					Rectangle bounds = x.getBounds();
+					Rectangle mybox;
+					if(dir) mybox = new Rectangle(this.x+this.BASEWIDTH - 5,y,40,HEIGHT);
+					else mybox = new Rectangle(this.x-35,y,40,HEIGHT);
+				
+					if(bounds.intersects(mybox)){
+						x.giveDamage(10);
+					};
+				}
+			}
+		}
+		
+		
+		if(KickingPhotoItt==0 && !kickfwd){
+			kickfwd=true;
+			kick = false;
+			addedWIDTH = 0;
+			WIDTH = BASEWIDTH;
+			img = baseimg;
+		}
+	}
+	
 	public void giveDamage(int damage){
 		this.damage =damage+this.damage;
+	}
+	public Object getCurrentObj(){
+		return currentObject;
 	}
 }

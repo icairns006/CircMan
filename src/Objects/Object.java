@@ -108,4 +108,7 @@ public abstract class Object{
 	public int getDamage(){
 		return damage;
 	}
+	public boolean getGot(){
+		return got;
+	}
 }

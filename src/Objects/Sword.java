@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import GameEngine.Game;
+import Players.Minion;
 
 public class Sword extends Object {
 	ArrayList<Integer> heights = new ArrayList<Integer>();
@@ -13,7 +14,7 @@ public class Sword extends Object {
 	private boolean chop =false;
 	private int imagenum = 0;
 	private float imgnum = 0;
-	private int imgdirct = 1;
+	private float imgdirct = (float).9;
 	public Sword(Game game, int xx, int yy) {
 		super(game, xx, yy);
 		ImageIcon ii ;
@@ -25,16 +26,16 @@ public class Sword extends Object {
         }
         img = images.get(0);
         
-        heights.add(15);
-        widths.add(40);
-        heights.add(30);
-        widths.add(40);
-        heights.add(35);
-        widths.add(47);
-        heights.add(40);
-        widths.add(45);
-        heights.add(45);
-        widths.add(43);
+        heights.add(80);
+        widths.add(80);
+        heights.add(80);
+        widths.add(80);
+        heights.add(80);
+        widths.add(80);
+        heights.add(80);
+        widths.add(80);
+        heights.add(80);
+        widths.add(80);
         HEIGHT = heights.get(0);
         WIDTH = widths.get(0);
         
@@ -52,11 +53,18 @@ public class Sword extends Object {
 			imgnum = imgnum+(float)(.1*imgdirct);
 			imagenum = (int)imgnum;
 			if(imagenum==4){
-				imgdirct = -1;
+				imgdirct = (float) -1.5;
+				for(Minion x: game.minions){
+					if(x.getCurrentObj()!=this){
+						if(x.getBounds().intersects(this.x,this.y, this.HEIGHT,this.WIDTH))
+							x.giveDamage(10);
+					}
+				}
+				
 			}
-			if(imagenum ==0  && imgdirct==-1){
+			if(imagenum ==0  && imgdirct<-.1){
 				chop = false;
-				imgdirct = 1;
+				imgdirct = (float) .9;
 			}
 			img = images.get(imagenum);
 			HEIGHT= heights.get(imagenum);
@@ -64,6 +72,13 @@ public class Sword extends Object {
 			yy=yy-(heights.get(imagenum)-heights.get(0));
 			
 		}
+	}
+	@Override
+	public void setPosition(int xx, int yy, boolean dirr){
+		super.setPosition(xx, yy, dirr);
+		this.yy=this.yy -55;
+		if(dir)this.xx=this.xx - 17 ;
+		else this.xx=this.xx +17 ;
 	}
 
 }

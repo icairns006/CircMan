@@ -55,8 +55,8 @@ public class Game extends JPanel {
 		objs.add(new Sword(this, 400, 100));
 		//minions.add(new Minion1(this,1));
 		//minions.add(new Minion2(this,2));
-		minions.add(new Minion1(this, WIDTH/3, 300,1));
-		minions.add(new Minion2(this, WIDTH/3, 300,2));
+		minions.add(new Minion1(this, WIDTH/3, 300,1, "Blue"));
+		minions.add(new Minion2(this, 2*WIDTH/3, 300,2, "Green"));
 		//minions.add(new Minion2(this,2*WIDTH/3,300, 2));
 		for(int i=0; i< 20;i++){
 			grounds.add(new Grass(this,(i*50),HEIGHT-150));
