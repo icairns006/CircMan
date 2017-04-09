@@ -25,6 +25,7 @@ public class Sword extends Object {
         	images.add(temp);
         }
         img = images.get(0);
+        baseImg =img;
         
         heights.add(80);
         widths.add(80);
@@ -38,6 +39,8 @@ public class Sword extends Object {
         widths.add(80);
         HEIGHT = heights.get(0);
         WIDTH = widths.get(0);
+        BASEWIDTH =WIDTH;
+        BASEHEIGHT= HEIGHT;
         
 	}
 

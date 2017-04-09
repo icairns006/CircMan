@@ -12,6 +12,7 @@ public class Candy extends Object {
 		super(game, xx, yy);
 		ImageIcon ii = new ImageIcon("Resources/Objects/friend.png");
         img = ii.getImage();
+        baseImg =img;
 	}
 
 	@Override

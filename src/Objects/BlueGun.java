@@ -8,8 +8,16 @@ public class BlueGun extends ShootingObject {
 	public BlueGun(Game game, int xx, int yy) {
 		super(game, xx, yy);
 		ImageIcon ii = new ImageIcon("Resources/Objects/BlueGun.png");
+		objectName = "BlueGun";
         img = ii.getImage();
+        baseImg =img;
         WIDTH=65;
+        BASEWIDTH = WIDTH;
+        TOSSEDHEIGHT = WIDTH;
+        TOSSEDWIDTH= WIDTH;
+        getTossedImages();
+        
+        
 	
 	}
 

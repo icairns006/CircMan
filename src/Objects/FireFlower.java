@@ -17,6 +17,7 @@ public class FireFlower extends ShootingObject {
         imgNotGot = img;
         ii = new ImageIcon("Resources/Objects/fireflowerAct.png");
         imgGot= ii.getImage();
+        baseImg =img;
 	
 	}
 	@Override

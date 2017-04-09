@@ -35,16 +35,15 @@ public class Game extends JPanel {
 	public Set<Ground> grounds= new HashSet<Ground>();
 	Background background = new Background(this);
 	public static int scale = 1;
-	public static int HEIGHT = 400;
-	public static int WIDTH = 600;
-	public final static float Gravity = (float).01; 
+	public static int HEIGHT;
+	public static int WIDTH;
+	public final static float Gravity = (float).015; 
 	final static int HealthWidth= 200;
 	private int minionCount=0;
 	
 
-	public Game() {
-		int width=getToolkit().getScreenSize().width;
-		int height=getToolkit().getScreenSize().height;
+	public Game(int width,int height) {
+		
 		WIDTH=width;
 		HEIGHT=height;
 		objs.add(new Candy(this, 100, 200));
@@ -64,7 +63,7 @@ public class Game extends JPanel {
 		}
 		minionCount = minions.size();
 		
-		addKeyListener(new KeyListener() {
+		/*addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				
@@ -82,11 +81,12 @@ public class Game extends JPanel {
 				keysActive.add(e.getKeyCode());
 			}
 		});
-		setFocusable(true);
+		//setFocusable(true);*/
 	}
 	
-	private void move() {
+	protected void move(Set<Integer> keysActive) {
 		//ball.move();
+		this.keysActive=keysActive;
 		Set<Minion> tempMin = new HashSet<Minion>();
 		for(Minion x: minions){
 			x.move(keysActive);
@@ -95,10 +95,18 @@ public class Game extends JPanel {
 				System.out.println(x.name + " Just Got Killed");
 			}
 		}
+		Set<Object> tempObj = new HashSet<Object>();
 		for(Object x: objs){
 			x.move();
+			if(x.offScreen())tempObj.add(x);
 		}
+		for(Object x: tempObj){
+			objs.remove(x);
+		}
+		
 		for(Minion x: tempMin){
+			Object minObj = x.getCurrentObj();
+			if(minObj!=null) minObj.got = false;
 			minions.remove(x);
 		}
 		Set<Bullet> temp = new HashSet<Bullet>();
@@ -154,21 +162,5 @@ public class Game extends JPanel {
 	}
 	
 
-	public static void main(String[] args) throws InterruptedException {
-		
-		JFrame frame = new JFrame("Minion Smash");
-		Game game = new Game();
-		
-		frame.add(game);
-		frame.setSize(WIDTH, HEIGHT);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		while (true) {
-			game.move();
-			game.repaint();
-			Thread.sleep(4);
-		}
-	}
+	
 }
