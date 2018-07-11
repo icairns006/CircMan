@@ -1,17 +1,30 @@
 package GameEngine;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
 public class ProgramManager {
-	public int HEIGHT;
-	public int WIDTH;
+	/*
+	public enum level{ STAR,NONE};
+	private static level curLev = level.NONE;
+	
+	public void setCurLev(level curLev) {
+		this.curLev = curLev;
+	}
+
+	private int HEIGHT;
+	private int WIDTH;
 	private JFrame frame;
 	static Set<Integer> keysActive = new HashSet<Integer>();
 public ProgramManager(){
@@ -27,8 +40,9 @@ public ProgramManager(){
 	
 public static void main(String[] args) throws InterruptedException {
 		ProgramManager myProgram=new ProgramManager();
+		
 		myProgram.startHomeScreen();
-		while(!keysActive.contains(KeyEvent.VK_A)){
+		while(curLev == level.NONE){
 			Thread.sleep(100);
 		}
 		
@@ -64,22 +78,39 @@ void addKeyList(){
 }
 private Game startGame(){
 	Game game = new Game(WIDTH,HEIGHT);
+	frame.setLayout(new BorderLayout());
 	frame.add(game);
 	frame.setVisible(true);
 	return game;
 }
 
 private void startHomeScreen(){
-	HomeScreen myHomeScreen = new HomeScreen(WIDTH,HEIGHT);
-	frame.add(myHomeScreen);
-	//frame.setVisible(true);
-	Font font = new Font("Verdana", Font.BOLD, 40);
+	HomeScreen myHomeScreen = new HomeScreen(HEIGHT, WIDTH);
+	frame.setContentPane(myHomeScreen);
+	//panel1.add(test);
+	JButton b3 = new JButton("Star Land",
+            new ImageIcon
+            ("Resources/Background/starland.jpeg"));
+     b3.setVerticalTextPosition(SwingConstants.TOP);
+     b3.setHorizontalTextPosition(SwingConstants.CENTER);
+     b3.addActionListener(new ActionListener(){
 
-    
-    
-    frame.add(myHomeScreen);
-    frame.setVisible(true);
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			curLev = level.STAR;
+		}
+    	 
+     }); 
 	
+     frame.setLayout( new GridBagLayout() );
+     frame.add(b3, new GridBagConstraints());
+	//frame.add(b3);
+	
+    frame.setVisible(true);
+	}
+	*/
 }
-}
+
+
 

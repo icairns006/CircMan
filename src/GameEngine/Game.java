@@ -1,5 +1,6 @@
 package GameEngine;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -16,10 +17,10 @@ import Background.Background;
 import Bullets.Bullet;
 import Ground.Grass;
 import Ground.Ground;
-import Objects.BlueGun;
+//import Objects.BlueGun;
 import Objects.Candy;
 import Objects.FireFlower;
-import Objects.Sword;
+import Objects.*;
 import Players.Minion;
 import Players.Minion1;
 import Players.Minion2;
@@ -40,6 +41,8 @@ public class Game extends JPanel {
 	public final static float Gravity = (float).015; 
 	final static int HealthWidth= 200;
 	private int minionCount=0;
+	private boolean stillAlive = true;
+	private String deadMinion = null;
 	
 
 	public Game(int width,int height) {
@@ -63,29 +66,12 @@ public class Game extends JPanel {
 		}
 		minionCount = minions.size();
 		
-		/*addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if(keysActive.contains(e.getKeyCode())){
-					keysActive.remove(e.getKeyCode());
-				}
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				keysActive.add(e.getKeyCode());
-			}
-		});
-		//setFocusable(true);*/
+		
 	}
 	
-	protected void move(Set<Integer> keysActive) {
+	protected boolean move(Set<Integer> keysActive) {
 		//ball.move();
+		if(stillAlive){
 		this.keysActive=keysActive;
 		Set<Minion> tempMin = new HashSet<Minion>();
 		for(Minion x: minions){
@@ -93,6 +79,9 @@ public class Game extends JPanel {
 			if(x.GotKilled()){
 				tempMin.add(x);
 				System.out.println(x.name + " Just Got Killed");
+				stillAlive = false;
+				deadMinion = x.name;
+				//return false;
 			}
 		}
 		Set<Object> tempObj = new HashSet<Object>();
@@ -120,11 +109,21 @@ public class Game extends JPanel {
 		for(Bullet x: temp){
 			bullets.remove(x);
 		}
+		}
+		else{
+			if(this.keysActive.contains(KeyEvent.VK_M)){
+				System.out.println("contains M");
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		//if(stillAlive){
+		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
@@ -140,6 +139,7 @@ public class Game extends JPanel {
 			g.fillRect(((WIDTH*min.getPlayerNum())/(minionCount+1))-(HealthWidth/2), 10, (HealthWidth-((min.getDamage()*HealthWidth)/100)), 20);
 			g.setColor(Color.BLACK);
 			g.drawString( min.name , ((WIDTH*min.getPlayerNum())/(minionCount+1))-(HealthWidth/2) , 25 ); 
+			
 		}
 		//ball.paint(g2d);
 		for(Minion x: minions){
@@ -154,11 +154,18 @@ public class Game extends JPanel {
 		for(Ground x: grounds){
 			x.paint(g2d);
 		}
+		if(!stillAlive){
+			Font font = new Font("Garamond", 10, 60);
+			g.setFont(font);
+			g.drawString( deadMinion+" Lost!!!", (WIDTH/2)-225,100);
+			g.drawString( "Press M to Continue", (WIDTH/2)-300,150); 
+			
+		}
 	}
 	
 	public void gameOver() {
 		JOptionPane.showMessageDialog(this, "Game Over", "Game Over", JOptionPane.YES_NO_OPTION);
-		System.exit(ABORT);
+		
 	}
 	
 

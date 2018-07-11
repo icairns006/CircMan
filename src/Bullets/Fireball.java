@@ -11,7 +11,7 @@ public class Fireball extends Bullet {
 	float yy = 0;
 	public Fireball(Game game, int xx, int yy, boolean dirr) {
 		super(game, xx, yy, dirr);
-		ImageIcon ii = new ImageIcon("Resources/fireball1.png");
+		ImageIcon ii = new ImageIcon(getClass().getResource("/fireball1.png"));
         img = ii.getImage();
         damage = 10;
         this.yy=yy;

@@ -50,7 +50,7 @@ public abstract class Minion {
 	private int playerNum=0;
 	private boolean actionRelease = false;
 	private int jump = 2;
-	private String PlayerPath= "Resources/Players/";
+	private String PlayerPath= "/Players/";
 	protected String ColorPath= "Blue";
 	private ArrayList<Image> Walking = new ArrayList<Image>();
 	private ArrayList<Image> Jumping = new ArrayList<Image>();
@@ -109,38 +109,38 @@ public abstract class Minion {
 		ImageIcon ii ;
         Image temp;
         
-        ii = new ImageIcon(PlayerPath+ColorPath+"/CircManStand1.png");
+        ii = new ImageIcon(getClass().getResource(PlayerPath+ColorPath+"/CircManStand1.png"));
         img = ii.getImage();
         baseimg = img;
         for(int i = 0; i<numWalkingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+ColorPath+"/Walk/CircManWalk"+(i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource(PlayerPath+ColorPath+"/Walk/CircManWalk"+(i+1)+".png"));
         	temp = ii.getImage();
         	Walking.add(temp);
         }
         
         for(int i = 0; i<numJumpingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+ColorPath+"/Jump/CircManJump"+(i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource(PlayerPath+ColorPath+"/Jump/CircManJump"+(i+1)+".png"));
         	temp = ii.getImage();
         	Jumping.add(temp);
         }
         for(int i = 0; i<numPunchingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+ColorPath+"/Punch/CircManPunch"+(i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource(PlayerPath+ColorPath+"/Punch/CircManPunch"+(i+1)+".png"));
         	temp = ii.getImage();
         	Punching.add(temp);
         }
         for(int i = 0; i<numKickingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+ColorPath+"/Kick/CircManKick"+(i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource(PlayerPath+ColorPath+"/Kick/CircManKick"+(i+1)+".png"));
         	temp = ii.getImage();
         	Kicking.add(temp);
         }
         for(int i = 0; i<numDownKickingPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+ColorPath+"/DownKick/CircManDownKick"+(i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource(PlayerPath+ColorPath+"/DownKick/CircManDownKick"+(i+1)+".png"));
         	temp = ii.getImage();
         	DownKicking.add(temp);
         }
         
         for(int i = 0; i<numSpinPunchPhotos; i++){
-        	ii = new ImageIcon(PlayerPath+ColorPath+"/SpinPunch/SpinPunch"+(i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource(PlayerPath+ColorPath+"/SpinPunch/SpinPunch"+(i+1)+".png"));
         	temp = ii.getImage();
         	SpinPunching.add(temp);
         }

@@ -7,7 +7,7 @@ import GameEngine.Game;
 public class BlueGun extends ShootingObject {
 	public BlueGun(Game game, int xx, int yy) {
 		super(game, xx, yy);
-		ImageIcon ii = new ImageIcon("Resources/Objects/BlueGun.png");
+		ImageIcon ii = new ImageIcon(getClass().getResource("/Objects/BlueGun.png"));
 		objectName = "BlueGun";
         img = ii.getImage();
         baseImg =img;

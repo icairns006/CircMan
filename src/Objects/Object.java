@@ -32,7 +32,7 @@ public abstract class Object{
 	
 	public boolean got = false;
 	private boolean tossed = false;
-	private String objectPath = "Resources/Objects/";
+	private String objectPath = "/Objects/";
 	protected String objectName = "";
 	private int damage =10;
 	private int numTossedImage = 11;
@@ -51,7 +51,7 @@ public abstract class Object{
 		ImageIcon ii;
 		Image temp;
 		for(int i = 0; i<numTossedImage; i++){
-        	ii = new ImageIcon(objectPath+objectName+"/Tossed/Tossed"+(i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource(objectPath+objectName+"/Tossed/Tossed"+(i+1)+".png"));
         	temp = ii.getImage();
         	TossedImages.add(temp);
         }

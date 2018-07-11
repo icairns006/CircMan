@@ -10,7 +10,7 @@ import GameEngine.Game;
 public class Candy extends Object {
 	public Candy(Game game, int xx, int yy) {
 		super(game, xx, yy);
-		ImageIcon ii = new ImageIcon("Resources/Objects/friend.png");
+		ImageIcon ii = new ImageIcon(getClass().getResource("/Objects/friend.png"));
         img = ii.getImage();
         baseImg =img;
 	}

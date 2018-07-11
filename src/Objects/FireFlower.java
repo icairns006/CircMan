@@ -12,10 +12,10 @@ public class FireFlower extends ShootingObject {
 
 	public FireFlower(Game game, int xx, int yy) {
 		super(game, xx, yy);
-		ImageIcon ii = new ImageIcon("Resources/Objects/fireflower.png");
+		ImageIcon ii = new ImageIcon(getClass().getResource("/Objects/fireflower.png"));
         img = ii.getImage();
         imgNotGot = img;
-        ii = new ImageIcon("Resources/Objects/fireflowerAct.png");
+        ii = new ImageIcon(getClass().getResource("/Objects/fireflowerAct.png"));
         imgGot= ii.getImage();
         baseImg =img;
 	

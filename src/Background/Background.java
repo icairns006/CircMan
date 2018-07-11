@@ -13,7 +13,7 @@ public class Background {
 	Game game;
 	public Background(Game game){
 		this.game=game;
-		ImageIcon ii = new ImageIcon("Resources/Background/hills.jpg");
+		ImageIcon ii = new ImageIcon(getClass().getResource("/Background/hills.jpg"));
         img = ii.getImage();
 		
 	}

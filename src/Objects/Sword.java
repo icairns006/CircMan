@@ -20,7 +20,7 @@ public class Sword extends Object {
 		ImageIcon ii ;
         Image temp;
         for(int i = 0; i<5; i++){
-        	ii = new ImageIcon("Resources/Objects/Sword/Sword" + (i+1)+".png");
+        	ii = new ImageIcon(getClass().getResource("/Objects/Sword/Sword" + (i+1)+".png"));
         	temp = ii.getImage();
         	images.add(temp);
         }
