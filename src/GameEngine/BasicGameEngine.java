@@ -81,7 +81,7 @@ public class BasicGameEngine {
 			gaming = game.move(keysActive);
 			game.repaint();
 			try {
-				Thread.sleep(3);
+				Thread.sleep(2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
